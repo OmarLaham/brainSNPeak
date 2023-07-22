@@ -26,6 +26,13 @@ def query_snp_ids_api(request):
 		
 	else:
 		snp_ids = request.POST.get('snp_ids')
+		hide_dev_details = request.POST.get('hide_dev_details')
+		if hide_dev_details == None:
+			hide_dev_details = False
+		else:
+			hide_dev_details = True
+		
+		print(">> hide_dev_details:", hide_dev_details)
 
 		response_status = 200 # unless we have any error
 		response_message = ""
@@ -64,10 +71,17 @@ def query_snp_ids_api(request):
 							response_snps.append({"id": snp_id, "ocrs": "NA"})
 						else:
 							df_peak = pd.read_csv(peak_info_path, sep="\t")
-							# reorder
-							df_peak = df_peak[["specimen", "cell_type", "brain_region"]]
-							# sort
-							df_peak = df_peak.sort_values(["specimen", "cell_type", "brain_region"])
+							
+							if hide_dev_details: #give results regardless of development timepoint
+								del df_peak["specimen"]
+								df_peak = df_peak.drop_duplicates()
+								df_peak = df_peak.sort_values(["cell_type", "brain_region"], ascending=True)
+							else:
+								# reorder
+								df_peak = df_peak[["specimen", "cell_type", "brain_region"]]
+								# sort with dev timepoints
+								df_peak = df_peak.sort_values(["specimen", "cell_type", "brain_region"], ascending=True)
+							
 							
 							dict_ocrs = {
 								"colnames": " - ".join(list(df_peak.columns)),
