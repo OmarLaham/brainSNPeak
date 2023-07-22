@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+      
+	<div class="row mt-5">
+		<div class="col col-4"></div>
+		
+		<!-- form col-->
+		<div class="col col-4"></div>
+			<div class="alert alert-primary" role="alert">
+			  Enter SNP IDs to overlap them with iPSCs ATAC-Seq data of different brain cell types, regions and development ages.
+			</div>
+			
+			<form action="/query_snp_ids/api" method="post">
+				{% csrf_token %}
+			  <div class="mb-3">
+				<label for="snpIDs" class="form-label">SNP IDs (comma separated)</label>
+				<textarea class="form-control" id="snpIDs" name="snp_ids" placeholder="rs6678847,rs867810,rs34211380" rows="3"></textarea>
+			  </div>
+			  <button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		
+			<br /><br />
+			
+			<!-- citation -->
+			<div id="citation">
+				<b>Citation:</b>
+				iPSCs ATAC-Seq data is obtained from the paper <a target="_blank" href="https://www.nature.com/articles/s41586-021-03209-8">Single-cell epigenomics reveals mechanisms of human cortical development (Ziffra, R.S., Kim, C.N., Ross, J.M. et al. ). Nature.</a>.
+			</div>
+			<!-- /citation -->
+			
+		</div>
+		<!-- /form col-->
+		
+		<div class="col col-4"></div>
+	</div>
+
+{% endblock content %}
+

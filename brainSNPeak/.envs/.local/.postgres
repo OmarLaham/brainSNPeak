@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=brainsnpeak
+POSTGRES_USER=dWmTLWDRnDvcAEbmCjVHJqclXbWKSafD
+POSTGRES_PASSWORD=4U9m1Q4A7swsCjMvfCL8VUjBPTJoSSfrckMBpJsnLNEFLiU1jkISi1PoDv9sH0aq
