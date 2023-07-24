@@ -26,13 +26,19 @@ def query_snp_ids_api(request):
 		
 	else:
 		snp_ids = request.POST.get('snp_ids')
-		hide_dev_details = request.POST.get('hide_dev_details')
-		if hide_dev_details == None:
-			hide_dev_details = False
-		else:
-			hide_dev_details = True
+		exclude_dev_details = request.POST.get('exclude_dev_details')
+		exclude_brain_region = request.POST.get('exclude_brain_region')
 		
-		print(">> hide_dev_details:", hide_dev_details)
+		if exclude_dev_details == None:
+			exclude_dev_details = False
+		else:
+			exclude_dev_details = True
+			
+		if exclude_brain_region == None:
+			exclude_brain_region = False
+		else:
+			exclude_brain_region = True
+		
 
 		response_status = 200 # unless we have any error
 		response_message = ""
@@ -72,15 +78,18 @@ def query_snp_ids_api(request):
 						else:
 							df_peak = pd.read_csv(peak_info_path, sep="\t")
 							
-							if hide_dev_details: #give results regardless of development timepoint
+							# reorder
+							df_peak = df_peak[["specimen", "cell_type", "brain_region"]]
+							
+							if exclude_dev_details: #give results regardless of development timepoint
 								del df_peak["specimen"]
-								df_peak = df_peak.drop_duplicates()
-								df_peak = df_peak.sort_values(["cell_type", "brain_region"], ascending=True)
-							else:
-								# reorder
-								df_peak = df_peak[["specimen", "cell_type", "brain_region"]]
-								# sort with dev timepoints
-								df_peak = df_peak.sort_values(["specimen", "cell_type", "brain_region"], ascending=True)
+								
+							if exclude_brain_region:
+								del df_peak["brain_region"]
+								
+							df_peak = df_peak.drop_duplicates()
+							df_peak = df_peak.sort_values(list(df_peak.columns), ascending=True) # sort by all remaining cols asc
+							
 							
 							
 							dict_ocrs = {
