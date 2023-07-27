@@ -47,7 +47,9 @@ def query_snp_ids_api(request):
 
 		# first check that input is correct
 		valid_input = True
-		snp_ids = snp_ids.split(",")
+		
+		#if snps are separated
+		snp_ids = snp_ids.split("\n")
 		for snp_id in snp_ids:
 			snp_id = snp_id.strip()
 			if snp_id[0:2] != "rs":
