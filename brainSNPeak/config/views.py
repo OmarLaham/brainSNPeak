@@ -27,17 +27,12 @@ def query_snp_ids_api(request):
 	else:
 		snp_ids = request.POST.get('snp_ids')
 		exclude_dev_details = request.POST.get('exclude_dev_details')
-		exclude_brain_region = request.POST.get('exclude_brain_region')
+		brain_region = request.POST.get('brain_region')
 		
 		if exclude_dev_details == None:
 			exclude_dev_details = False
 		else:
 			exclude_dev_details = True
-			
-		if exclude_brain_region == None:
-			exclude_brain_region = False
-		else:
-			exclude_brain_region = True
 		
 
 		response_status = 200 # unless we have any error
@@ -57,6 +52,12 @@ def query_snp_ids_api(request):
 				response_message = "some SNP ids are invalid"
 				valid_input = False
 				break
+				
+		# validate brain region input
+		if not brain_region in ["NA", "exclude", "Cortex", "Insula", "M1", "MGE", "Parietal", "PFC", "Somato", "Temporal", "V1"]:
+			response_status = 500
+			response_message = "invalid brain region"
+			valid_input = False
 			
 			
 		# search for results
@@ -86,8 +87,10 @@ def query_snp_ids_api(request):
 							if exclude_dev_details: #give results regardless of development timepoint
 								del df_peak["specimen"]
 								
-							if exclude_brain_region:
+							if brain_region == "exclude":
 								del df_peak["brain_region"]
+							elif brain_region != "NA": # if not all regions are selected (no filter)
+								df_peak = df_peak.query("brain_region=='{0}'".format(brain_region))
 								
 							df_peak = df_peak.drop_duplicates()
 							df_peak = df_peak.sort_values(list(df_peak.columns), ascending=True) # sort by all remaining cols asc

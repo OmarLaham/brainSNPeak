@@ -17,6 +17,22 @@
 				<textarea class="form-control" id="snpIDs" name="snp_ids" placeholder="rs6678847&#10;rs867810&#10;rs34211380" rows="3"></textarea>
 			  </div>
 			  
+			  <div class="dropdown mb-3">
+					<select id="lstBrainRegion" name="brain_region" class="form-select" aria-label="Filter for a specific brain region">
+				    <option value="NA" selected>- All -</option>
+				    <option value="exclude">- Exclude brain region -</option>
+				    <option value="Cortex">Cortex</option>
+				    <option value="Insula">Insula</option>
+				    <option value="M1">M1</option>
+				    <option value="MGE">MGE</option>
+				    <option value="Parietal">Parietal</option>
+				    <option value="PFC">PFC</option>
+				    <option value="Somato">Somato</option>
+				    <option value="Temporal">Temporal</option>
+				    <option value="V1">V1</option>
+				  </select>
+				</div>
+			  
 			  <div class="mb-3 form-check">
 					<input class="form-check-input" type="checkbox" value="" id="chkExclueDevDetails" name="exclude_dev_details">
 					<label class="form-check-label" for="chkExclueDevDetails">
@@ -24,12 +40,12 @@
 					</label>
 				</div>
 				
-			  <div class="mb-3 form-check">
+			  <!--<div class="mb-3 form-check">
 					<input class="form-check-input" type="checkbox" value="" id="chkExcludeRegionDetails" name="exclude_brain_region">
 					<label class="form-check-label" for="chkExcludeRegionDetails">
 						Exclude brian region
 					</label>
-				</div>
+				</div>-->
 
 			  <button type="submit" class="btn btn-primary">Submit</button>
 			</form>
