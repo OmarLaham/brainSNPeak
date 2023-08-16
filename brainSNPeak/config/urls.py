@@ -7,15 +7,16 @@ from django.views.generic import TemplateView
 from . import views
 
 urlpatterns = [
-	path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
-	path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
-	
-	
-	path("query_snp_ids", TemplateView.as_view(template_name="pages/query_snp_ids.html"), name="query_snp_ids_view"),
-    path("query_snp_ids/api", views.query_snp_ids_api, name="query_snp_ids_api"),
-    
-    
-    
+
+	#path("", TemplateView.as_view(template_name="pages/old_home.html"), name="home"),
+
+    path("", TemplateView.as_view(template_name="pages/query_snp_ids.html"), name="home"),
+    path("api_single_snp/<str:snp_id>/<str:brain_region>/<str:exclude_dev_details>", views.query_single_snp_id, name="get_api"),
+	path("api_post", views.form_post_receiver, name="post_api"),
+
+
+    path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
+
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
